@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="An interactive, step-by-step lab for singly, circular singly, and doubly linked lists. Explore operations, pointer movement, edge cases, and C reference logic.">
+  <title>NodeLab — Linked Lists, Visualized</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="NodeLab home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>node<span class="brand-light">lab</span></span>
+      </a>
+      <nav class="top-nav" aria-label="Main navigation">
+        <a class="nav-link active" href="#lab">Interactive lab</a>
+        <a class="nav-link" href="#operations">Operations</a>
+        <a class="nav-link" href="#guide">Quick guide</a>
+      </nav>
+      <div class="top-actions">
+        <span class="offline-pill"><span class="status-dot"></span> Runs locally</span>
+        <button class="icon-button" id="themeToggle" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">◐</button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-line"></span> DATA STRUCTURES · INTERACTIVE PLAYGROUND</div>
+          <h1>Linked lists.<br><span>Made visible.</span></h1>
+          <p class="hero-lede">Explore pointers, practice every essential operation, and see what actually changes in memory. One step at a time, without the textbook fog.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#lab">Open the lab <span aria-hidden="true">↘</span></a>
+            <a class="text-link" href="#guide">Read the quick guide <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="hero-proof"><span class="proof-item"><b>3</b> list structures</span><span class="proof-separator"></span><span class="proof-item"><b>23</b> operations</span><span class="proof-separator"></span><span class="proof-item"><b>0</b> dependencies</span></div>
+        </div>
+        <div class="hero-visual" aria-label="Illustration of linked nodes">
+          <div class="visual-orbit orbit-one"></div><div class="visual-orbit orbit-two"></div>
+          <div class="visual-caption"><span class="caption-dot"></span> POINTERS IN MOTION</div>
+          <div class="hero-node-row">
+            <div class="hero-node"><small>HEAD</small><strong>12</strong><span>next</span></div><span class="hero-arrow">→</span>
+            <div class="hero-node node-highlight"><small>TEMP</small><strong>24</strong><span>next</span></div><span class="hero-arrow">→</span>
+            <div class="hero-node"><small>NULL</small><strong>36</strong><span>end</span></div>
+          </div>
+          <div class="visual-foot"><span>01</span><span class="visual-foot-line"></span><span>SINGLY LINKED LIST</span></div>
+        </div>
+      </section>
+
+      <section class="lab-section section-wrap" id="lab">
+        <div class="section-heading">
+          <div><div class="section-kicker">THE PLAYGROUND</div><h2>Your list, your rules.</h2></div>
+          <p>Choose a structure. Pick an operation. Follow the pointers.</p>
+        </div>
+
+        <div class="structure-picker" role="tablist" aria-label="Linked list type">
+          <button class="structure-tab selected" data-type="singly" role="tab" aria-selected="true" type="button"><span class="type-icon">→</span><span><b>Singly linked</b><small>One-way connections</small></span><span class="tab-check">✓</span></button>
+          <button class="structure-tab" data-type="circular" role="tab" aria-selected="false" type="button"><span class="type-icon">↻</span><span><b>Circular singly</b><small>Tail loops to head</small></span><span class="tab-check">✓</span></button>
+          <button class="structure-tab" data-type="doubly" role="tab" aria-selected="false" type="button"><span class="type-icon">⇄</span><span><b>Doubly linked</b><small>Forward and backward</small></span><span class="tab-check">✓</span></button>
+        </div>
+
+        <div class="workbench">
+          <aside class="operation-rail" id="operations">
+            <div class="rail-header"><div><div class="section-kicker">CONTROL DECK</div><h3>Operations</h3></div><span class="count-chip">23</span></div>
+            <label class="search-box"><span aria-hidden="true">⌕</span><input id="operationSearch" type="search" placeholder="Find an operation…" autocomplete="off"><kbd>/</kbd></label>
+            <div class="operation-groups" id="operationGroups"></div>
+            <div class="rail-tip"><span class="tip-icon">✦</span><div><b>Learning tip</b><p>Trace the pointers before worrying about the code. The links are the logic.</p></div></div>
+          </aside>
+
+          <section class="workspace-main" aria-label="Linked list workbench">
+            <div class="panel list-panel">
+              <div class="panel-topline">
+                <div><div class="section-kicker">LIVE STRUCTURE</div><h3 id="structureTitle">Singly linked list</h3></div>
+                <div class="panel-tools"><button class="small-button" id="undoBtn" type="button" disabled>↶ Undo</button><button class="small-button" id="resetBtn" type="button">Reset</button></div>
+              </div>
+              <div class="stats-row">
+                <div class="stat-card"><span>Nodes</span><strong id="statNodes">3</strong></div>
+                <div class="stat-card"><span>Head</span><strong id="statHead">10</strong></div>
+                <div class="stat-card"><span>Tail</span><strong id="statTail">30</strong></div>
+                <div class="stat-card"><span>Shape</span><strong id="statShape">Linear</strong></div>
+              </div>
+              <div class="canvas-label"><span><span class="live-dot"></span> POINTER MAP</span><span id="graphHint">Select an operation to begin</span></div>
+              <div class="graph-viewport" id="graphViewport"><div class="empty-graph"><div class="empty-symbol">∅</div><b>Your nodes live here</b><span>Load a list or run an operation to see pointers.</span></div></div>
+              <div class="legend" id="pointerLegend"><span><i class="legend-dot head-dot"></i> head</span><span><i class="legend-dot temp-dot"></i> temp</span><span><i class="legend-dot prev-dot"></i> prev</span><span><i class="legend-dot new-dot"></i> new</span></div>
+              <div class="list-editor">
+                <div class="editor-copy"><b>Start with your own values</b><span>Comma-separated integers · max 30 nodes</span></div>
+                <div class="editor-controls"><input id="seedInput" value="10, 20, 30" aria-label="Initial list values" spellcheck="false"><button id="loadListBtn" class="button secondary" type="button">Load list</button></div>
+              </div>
+            </div>
+
+            <div class="panel action-panel">
+              <div class="panel-topline action-titleline"><div><div class="section-kicker">OPERATION SETUP</div><h3 id="operationTitle">Insert at front</h3><p id="operationDescription">Create a node and connect it before the current head.</p></div><span class="operation-number" id="operationNumber">01</span></div>
+              <form id="operationForm" class="operation-form">
+                <div id="operationFields" class="fields-grid"></div>
+                <div class="form-actions"><button class="button primary" id="visualizeBtn" type="submit">Visualize operation <span aria-hidden="true">→</span></button><button class="button quiet" id="quickRunBtn" type="button">Run instantly</button></div>
+              </form>
+              <div id="validationMessage" class="validation-message" role="status" aria-live="polite"></div>
+            </div>
+
+            <div class="panel trace-panel" id="tracePanel">
+              <div class="panel-topline"><div><div class="section-kicker">EXECUTION TRACE</div><h3>Follow every step</h3></div><span class="trace-status" id="traceStatus">Ready to run</span></div>
+              <div class="trace-progress"><div class="trace-progress-fill" id="traceProgressFill"></div></div>
+              <div class="trace-step-content" id="traceStepContent"><div class="trace-placeholder"><span class="placeholder-icon">⌁</span><div><b>Your pointer trace starts here.</b><p>Choose an operation above and press “Visualize operation” to step through its logic.</p></div></div></div>
+              <div class="trace-controls"><button class="small-button" id="prevStepBtn" type="button" disabled>← Previous</button><div class="step-count" id="stepCount">No active trace</div><div class="trace-control-right"><button class="small-button" id="playPauseBtn" type="button" disabled>▶ Play</button><button class="button secondary" id="nextStepBtn" type="button" disabled>Next step →</button></div></div>
+            </div>
+          </section>
+
+          <aside class="inspector">
+            <div class="panel inspector-panel">
+              <div class="inspector-heading"><div><div class="section-kicker">UNDER THE HOOD</div><h3>Pointer inspector</h3></div><span class="inspector-symbol">⌘</span></div>
+              <p class="inspector-subtitle">The pointer positions for the selected execution step.</p>
+              <div class="pointer-list" id="pointerList"><div class="pointer-empty">Run an operation to inspect pointer locations.</div></div>
+              <div class="inspector-divider"></div>
+              <div class="code-heading"><div><div class="section-kicker">C REFERENCE</div><h3 id="codeTitle">insertFront()</h3></div><button class="copy-button" id="copyCodeBtn" type="button" title="Copy code">Copy</button></div>
+              <div class="code-block"><div class="code-top"><span><i></i><i></i><i></i></span><span id="codeFileLabel">singly_linked_list.c</span></div><pre><code id="codeContent">/* Choose an operation to view its C pointer logic. */</code></pre></div>
+              <p class="code-note" id="codeNote">The reference snippet shows the core pointer updates for this structure.</p>
+              <button id="showRulesBtn" class="rules-toggle" type="button" aria-expanded="false">Structure rules <span>＋</span></button>
+              <div id="rulesContent" class="rules-content hidden"></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="operations-overview section-wrap" id="overview">
+        <div class="section-heading"><div><div class="section-kicker">BUILT FOR PRACTICE</div><h2>More than push and pop.</h2></div><p>Core mutations, queries, and transformations for all three list types.</p></div>
+        <div class="feature-grid">
+          <article class="feature-card"><div class="feature-icon mint">↗</div><div class="feature-tag">01 · INSERT</div><h3>Connect new nodes</h3><p>Insert at the front, end, a position, before a value, or after a value.</p><span class="feature-foot">5 operations</span></article>
+          <article class="feature-card"><div class="feature-icon peach">−</div><div class="feature-tag">02 · DELETE</div><h3>Unlink safely</h3><p>Delete the first or last node, by position, by value, or remove all matches.</p><span class="feature-foot">5 operations</span></article>
+          <article class="feature-card"><div class="feature-icon lilac">⌕</div><div class="feature-tag">03 · INSPECT</div><h3>Read the structure</h3><p>Search, count, display, find the middle, or find the Nth node from the end.</p><span class="feature-foot">6 operations</span></article>
+          <article class="feature-card"><div class="feature-icon blue">⟳</div><div class="feature-tag">04 · TRANSFORM</div><h3>Rewire the list</h3><p>Reverse, sort, rotate, remove duplicates, check palindromes, or clear the list.</p><span class="feature-foot">7 operations</span></article>
+        </div>
+      </section>
+
+      <section class="guide-section section-wrap" id="guide">
+        <div class="section-heading"><div><div class="section-kicker">A QUICK FIELD GUIDE</div><h2>Three structures. Three rules.</h2></div><p>Every pointer operation makes more sense once the shape is clear.</p></div>
+        <div class="guide-grid">
+          <article class="guide-card"><div class="guide-head"><span class="guide-symbol">→</span><span class="guide-label">SINGLY</span></div><h3>One direction</h3><div class="mini-chain"><span>10</span><b>→</b><span>20</span><b>→</b><span>30</span><b>→</b><em>NULL</em></div><p>Each node has one `next` pointer. The last node points to `NULL`.</p><div class="guide-rule"><b>Remember</b><span>Save the previous node when deleting from the end.</span></div></article>
+          <article class="guide-card"><div class="guide-head"><span class="guide-symbol">↻</span><span class="guide-label">CIRCULAR SINGLY</span></div><h3>A loop, not a dead end</h3><div class="mini-chain circular-mini"><span>10</span><b>→</b><span>20</span><b>→</b><span>30</span><b>↶</b></div><p>The tail points back to `head`. Traversal must stop when it reaches `head` again.</p><div class="guide-rule"><b>Remember</b><span>Handle the one-node loop where `head->next == head`.</span></div></article>
+          <article class="guide-card"><div class="guide-head"><span class="guide-symbol">⇄</span><span class="guide-label">DOUBLY</span></div><h3>Both directions</h3><div class="mini-chain"><span>10</span><b>⇄</b><span>20</span><b>⇄</b><span>30</span></div><p>Each node has `prev` and `next`; links must stay consistent in both directions.</p><div class="guide-rule"><b>Remember</b><span>When reconnecting nodes, update both `next` and `prev` links.</span></div></article>
+        </div>
+      </section>
+
+      <section class="footer-cta section-wrap"><div><div class="section-kicker">READY FOR THE LAB?</div><h2>Understand the links.<br><span>Then write the code.</span></h2></div><a href="#lab" class="button primary">Back to the playground ↑</a></section>
+    </main>
+    <footer class="footer"><a class="brand footer-brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>node<span class="brand-light">lab</span></span></a><span>Built for learning. Powered by pointers.</span><div class="footer-links"><a href="#lab">Lab</a><a href="#operations">Operations</a><a href="#guide">Guide</a></div></footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
